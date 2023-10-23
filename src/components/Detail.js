@@ -14,6 +14,7 @@ function Detail() {
         />
       </ImageTitle>
       <Controls>
+
         <PlayButton>
           <img src="/images/play-icon-black.png" />
           <spa>PLAY</spa>
@@ -29,6 +30,12 @@ function Detail() {
           <img src="/images/group-icon.png" />
         </GroupWatchButton>
       </Controls>
+      <SubTitle>2023 . 7m . Family . Fantasy, Kids , Animation</SubTitle>
+      <Description>
+        A Chinese-Canadian woman suffering from empty nest syndrome gets a<br/>
+        second shot at motherhood when one of her handmade dumplings comes
+        alive.
+      </Description>
     </Container>
   );
 }
@@ -62,6 +69,7 @@ const ImageTitle = styled.div`
   width: 35vw;
   min-height: 170px;
   min-width: 200px;
+  margin-top:60px;
 
   img {
     width: 100%;
@@ -121,4 +129,19 @@ const AddButton = styled.button`
 
 const GroupWatchButton = styled(AddButton)`
   background: rgb(0, 0, 0);
+`;
+
+const SubTitle = styled.div`
+  color: rgb(249, 249, 249);
+  font-size: 15px;
+  min-height: 20px;
+  margin-top: 26px;
+`;
+
+const Description = styled.div`
+  line-height: 1.4;
+  font-size: 20px;
+  margin-top:16px;
+  color: rgb(249,249,249);
+  max-width:700px;
 `;
