@@ -1,7 +1,17 @@
 import React from "react";
 import styled from "styled-components";
+import { auth, provider } from "../firebase";
+import { signInWithPopup } from "firebase/auth";
 
-function Header() {
+function Header(props) {
+  const signInWithGoogle = async () => {
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Nav>
       <Logo src="images/logo.svg" />
@@ -31,7 +41,11 @@ function Header() {
           <span>SERIES</span>
         </a>
       </NavMenu>
-      <UserImg src="https://i.insider.com/5e820b04671de06758588fb8?width=700" />
+
+      <UserImg
+        onClick={signInWithGoogle}
+        src="https://i.insider.com/5e820b04671de06758588fb8?width=700"
+      />
     </Nav>
   );
 }
@@ -79,7 +93,7 @@ const NavMenu = styled.div`
         bottom: -6px;
         opacity: 0;
         transform-origin: left center;
-        transition:all 250ms cubic-bezier(0.25,0.46,0.45,0.94) 0s;
+        transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s;
         transform: scaleX(0);
       }
     }
@@ -98,5 +112,5 @@ const UserImg = styled.img`
   width: 48px;
   border-radius: 50%;
   cursor: pointer;
-  padding-top:10px
+  padding-top: 10px;
 `;

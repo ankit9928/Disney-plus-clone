@@ -1,11 +1,24 @@
 import React from "react";
 import styled from "styled-components";
+import { selectMovies } from "../features/movie/movieSlice";
+import { useSelector } from "react-redux/es/hooks/useSelector";
 
 function Movies() {
+  const movies = useSelector(selectMovies);
+
+  console.log("this are the movies ", movies);
+
   return (
     <Container>
       <h4>Recommended for You</h4>
       <Content>
+        {movies &&
+          movies.map((movie) => (
+            <Wrap  key={movie.id}>
+              <img src={movie.cardImg} alt="movies" />
+            </Wrap>
+          ))}
+
         <Wrap>
           <img
             src="https://static1.colliderimages.com/wordpress/wp-content/uploads/2022/07/Marvel-Movies-Ranked-feature.jpg"

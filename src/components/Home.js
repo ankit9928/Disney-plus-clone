@@ -3,13 +3,36 @@ import styled from "styled-components";
 import ImgSlider from "./ImgSlider";
 import Viewers from "./Viewers";
 import Movies from "./Movies";
+import { useEffect } from "react";
+import { db } from "../firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setMovies } from "../features/movie/movieSlice";
 
 function Home() {
+  const dispatch = useDispatch();
+
+  const movies = async () => {
+    await getDocs(collection(db, "movies")).then((querySnapshot) => {
+      const tempMovies = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+
+      dispatch(setMovies(tempMovies));
+    });
+  };
+
+  useEffect(() => {
+    movies();
+  }, []);
+
   return (
     <Container>
       <ImgSlider />
       <Viewers />
-      <Movies/>
+      <Movies />
     </Container>
   );
 }
