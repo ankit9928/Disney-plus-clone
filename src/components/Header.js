@@ -2,50 +2,107 @@ import React from "react";
 import styled from "styled-components";
 import { auth, provider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-function Header(props) {
-  const signInWithGoogle = async () => {
+import {
+  selectUserName,
+  selectUserPhoto,
+  setUserLogin,
+  setSignOut,
+} from "../features/user/userSlice";
+import { useSelector } from "react-redux/es/hooks/useSelector";
+import { useDispatch } from "react-redux";
+
+function Header() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const userName = useSelector(selectUserName);
+  const userPhoto = useSelector(selectUserPhoto);
+
+  useEffect(() => {
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        dispatch(
+          setUserLogin({
+            name: user.displayName,
+            email: user.email,
+            photo: user.photoURL,
+          })
+        );
+
+        navigate("/");
+      }
+    });
+  });
+
+  const signIn = async () => {
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const { displayName, email, photoURL } = result.user;
+
+      dispatch(
+        setUserLogin({
+          name: displayName,
+          email,
+          photo: photoURL,
+        })
+      );
+      navigate("/");
     } catch (error) {
-      console.error(error);
+      console.log(error);
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      await auth.signOut();
+      dispatch(setSignOut());
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
     }
   };
 
   return (
     <Nav>
       <Logo src="images/logo.svg" />
-      <NavMenu>
-        <a>
-          <img src="/images/home-icon.svg" alt="home icon" />
-          <span>HOME</span>
-        </a>
-        <a>
-          <img src="/images/search-icon.svg" alt="home icon" />
-          <span>SEARCH</span>
-        </a>
-        <a>
-          <img src="/images/watchlist-icon.svg" alt="home icon" />
-          <span>WATCHLIST</span>
-        </a>
-        <a>
-          <img src="/images/original-icon.svg" alt="home icon" />
-          <span>ORIGINALS</span>
-        </a>
-        <a>
-          <img src="/images/movie-icon.svg" alt="home icon" />
-          <span>MOVIES</span>
-        </a>
-        <a>
-          <img src="/images/series-icon.svg" alt="home icon" />
-          <span>SERIES</span>
-        </a>
-      </NavMenu>
 
-      <UserImg
-        onClick={signInWithGoogle}
-        src="https://i.insider.com/5e820b04671de06758588fb8?width=700"
-      />
+      {!userName ? (
+        <LoginContainer>
+          <Login onClick={signIn}>Login</Login>
+        </LoginContainer>
+      ) : (
+        <>
+          <NavMenu>
+            <a>
+              <img src="/images/home-icon.svg" alt="home icon" />
+              <span>HOME</span>
+            </a>
+            <a>
+              <img src="/images/search-icon.svg" alt="home icon" />
+              <span>SEARCH</span>
+            </a>
+            <a>
+              <img src="/images/watchlist-icon.svg" alt="home icon" />
+              <span>WATCHLIST</span>
+            </a>
+            <a>
+              <img src="/images/original-icon.svg" alt="home icon" />
+              <span>ORIGINALS</span>
+            </a>
+            <a>
+              <img src="/images/movie-icon.svg" alt="home icon" />
+              <span>MOVIES</span>
+            </a>
+            <a>
+              <img src="/images/series-icon.svg" alt="home icon" />
+              <span>SERIES</span>
+            </a>
+          </NavMenu>
+          <UserImg onClick={signOut} src={userPhoto} />
+        </>
+      )}
     </Nav>
   );
 }
@@ -56,7 +113,7 @@ const Nav = styled.nav`
   height: 70px;
   background: #090b13;
   display: flex;
-  align-itmes: center;
+  align-items: center;
   padding: 0 36px;
   overflow-x: hidden;
 `;
@@ -78,6 +135,7 @@ const NavMenu = styled.div`
     img {
       height: 20px;
     }
+
     span {
       font-size: 13px;
       letter-spacing: 1.42px;
@@ -108,9 +166,31 @@ const NavMenu = styled.div`
 `;
 
 const UserImg = styled.img`
-  height: 48px;
   width: 48px;
+  height: 48px;
   border-radius: 50%;
   cursor: pointer;
-  padding-top: 10px;
+`;
+
+const Login = styled.div`
+  border: 1px solid #f9f9f9;
+  padding: 8px 16px;
+  border-radius: 4px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background-color: rgba(0, 0, 0, 0.6);
+  transition: all 0.2s ease 0s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f9f9f9;
+    color: #000;
+    border-color: transparent;
+  }
+`;
+
+const LoginContainer = styled.div`
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
 `;

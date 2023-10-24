@@ -2,11 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import { selectMovies } from "../features/movie/movieSlice";
 import { useSelector } from "react-redux/es/hooks/useSelector";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Movies() {
   const movies = useSelector(selectMovies);
-
-  console.log("this are the movies ", movies);
+  const navigate = useNavigate();
 
   return (
     <Container>
@@ -14,12 +15,14 @@ function Movies() {
       <Content>
         {movies &&
           movies.map((movie) => (
-            <Wrap  key={movie.id}>
-              <img src={movie.cardImg} alt="movies" />
+            <Wrap key={movie.id}>
+              <Link to={`/detail/${movie.id}`}>
+                <img src={movie.cardImg} alt="movies" />
+              </Link>
             </Wrap>
           ))}
 
-        <Wrap>
+        {/* <Wrap>
           <img
             src="https://static1.colliderimages.com/wordpress/wp-content/uploads/2022/07/Marvel-Movies-Ranked-feature.jpg"
             alt="movies"
@@ -66,7 +69,7 @@ function Movies() {
             src="https://stanleymovietheater.com/wp-content/uploads/2020/10/Coco-Family-Poster-Pixar.jpg"
             alt="movies"
           />
-        </Wrap>
+        </Wrap> */}
       </Content>
     </Container>
   );
