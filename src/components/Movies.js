@@ -16,60 +16,11 @@ function Movies() {
         {movies &&
           movies.map((movie) => (
             <Wrap key={movie.id}>
-              <Link to={`/detail/${movie.id}`}>
-                <img src={movie.cardImg} alt="movies" />
-              </Link>
+              {/* <Link to={`/detail/${movie.id}`}> */}
+                <img onClick={navigate(`/detail/${movie.id}`)} src={movie.cardImg} alt="movies" />
+              {/* </Link> */}
             </Wrap>
           ))}
-
-        {/* <Wrap>
-          <img
-            src="https://static1.colliderimages.com/wordpress/wp-content/uploads/2022/07/Marvel-Movies-Ranked-feature.jpg"
-            alt="movies"
-          />
-        </Wrap>
-        <Wrap>
-          <img
-            src="https://static1.colliderimages.com/wordpress/wp-content/uploads/2022/07/Marvel-Movies-Ranked-feature.jpg"
-            alt="movies"
-          />
-        </Wrap>
-        <Wrap>
-          <img
-            src="https://static1.colliderimages.com/wordpress/wp-content/uploads/2022/07/Marvel-Movies-Ranked-feature.jpg"
-            alt="movies"
-          />
-        </Wrap>
-        <Wrap>
-          <img
-            src="https://static1.colliderimages.com/wordpress/wp-content/uploads/2022/07/Marvel-Movies-Ranked-feature.jpg"
-            alt="movies"
-          />
-        </Wrap>
-        <Wrap>
-          <img
-            src="https://stanleymovietheater.com/wp-content/uploads/2020/10/Coco-Family-Poster-Pixar.jpg"
-            alt="movies"
-          />
-        </Wrap>
-        <Wrap>
-          <img
-            src="https://stanleymovietheater.com/wp-content/uploads/2020/10/Coco-Family-Poster-Pixar.jpg"
-            alt="movies"
-          />
-        </Wrap>
-        <Wrap>
-          <img
-            src="https://stanleymovietheater.com/wp-content/uploads/2020/10/Coco-Family-Poster-Pixar.jpg"
-            alt="movies"
-          />
-        </Wrap>
-        <Wrap>
-          <img
-            src="https://stanleymovietheater.com/wp-content/uploads/2020/10/Coco-Family-Poster-Pixar.jpg"
-            alt="movies"
-          />
-        </Wrap> */}
       </Content>
     </Container>
   );
